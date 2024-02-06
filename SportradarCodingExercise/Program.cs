@@ -1,4 +1,10 @@
+using Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//inject all services
+builder.Services.AddDbContext<ApplictionDBContext>();
+builder.Services.AddTransient<IScoreboardService, ScoreboardService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -13,6 +19,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -20,8 +28,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Scoreboard}/{action=Index}/{id?}");
 
 app.Run();
