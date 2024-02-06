@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<Models.Match>
+
+<div class="text-center">
+    <h2 class="display-4">Football Live Matches</h2>
+
+    <br />
+
+    <table class="table">
+    <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var match in Model)
+                {
+                    <tr>
+                        <td>@match.HomeTeam  @match.HomeTeamScore -  @match.AwayTeam  @match.AwayTeamScore</td>
+                        <td>
+                            @Html.ActionLink("Update Score", "UpdateScore", new { matchId = match.MatchId }, new { @class = "btn btn-primary" })
+                        </td>
+                        @if (!match.EndTime.HasValue)
+                        {
+                            <td>
+                                @Html.ActionLink("Finish Match", "FinishMatch", new { matchId = match.MatchId }, new { @class = "btn btn-warning" })
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>No active matches currently.</p>
+            }
+        </tbody>
+   </table>
+    <br />
+    <a class="btn btn-primary" asp-area="" asp-controller="Scoreboard" asp-action="NewMatch">Add Match</a>
+</div>

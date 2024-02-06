@@ -1,0 +1,40 @@
+﻿
+
+@model Models.Match 
+
+<h2>Update Match Score</h2>
+
+<form asp-action="UpdateScore" method="post">
+    <div class="form-group">
+        <label asp-for="HomeTeam">Home Team:</label>
+        <input asp-for="HomeTeam" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AwayTeam">Away Team:</label>
+        <input asp-for="AwayTeam" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="HomeTeamScore">Home Team Score:</label>
+        <input asp-for="HomeTeamScore" class="form-control" min="0"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AwayTeamScore">Away Team Score:</label>
+        <input asp-for="AwayTeamScore" class="form-control" min="0"/>
+    </div>
+
+
+    <input asp-for="MatchId" type="hidden" />
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Update Score</button>
+</form>
+
+<br />
+
+<div>
+    <a asp-action="Index">Back to Matches</a>
+</div>

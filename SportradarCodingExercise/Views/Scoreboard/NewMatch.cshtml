@@ -1,0 +1,47 @@
+﻿
+@model Models.Match 
+
+<h2>Create New Match</h2>
+
+<form asp-action="NewMatch" method="post">
+    <div class="form-group">
+        <label asp-for="HomeTeam">Home Team:</label>
+        <input asp-for="HomeTeam" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AwayTeam">Away Team:</label>
+        <input asp-for="AwayTeam" class="form-control" />
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Create Match</button>
+</form>
+
+
+@if (TempData.ContainsKey("ErrorMessage"))
+{
+    <br />
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<br />
+
+
+<div class="text-danger"> 
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+</div>
+
+<br />
+
+<div>
+    <a asp-action="Index">Back to Matches</a>
+</div>
