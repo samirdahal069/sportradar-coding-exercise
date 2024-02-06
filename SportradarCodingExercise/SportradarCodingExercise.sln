@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportradarCodingExercise", "SportradarCodingExercise.csproj", "{643E43F7-6E3E-4DCD-893E-E4AA8D9886E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportradarCodingExerciseTests", "..\SportradarCodingExerciseTests\SportradarCodingExerciseTests.csproj", "{1EDB8888-E557-4443-9BBD-ED8B9582DF93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{643E43F7-6E3E-4DCD-893E-E4AA8D9886E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{643E43F7-6E3E-4DCD-893E-E4AA8D9886E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{643E43F7-6E3E-4DCD-893E-E4AA8D9886E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{643E43F7-6E3E-4DCD-893E-E4AA8D9886E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EDB8888-E557-4443-9BBD-ED8B9582DF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EDB8888-E557-4443-9BBD-ED8B9582DF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EDB8888-E557-4443-9BBD-ED8B9582DF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EDB8888-E557-4443-9BBD-ED8B9582DF93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F52E83FF-5151-4974-BE58-73CD48E45A2D}
+	EndGlobalSection
+EndGlobal
