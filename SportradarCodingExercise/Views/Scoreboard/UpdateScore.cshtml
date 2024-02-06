@@ -35,6 +35,18 @@
 
 <br />
 
+
+<div class="text-danger">
+    <ul>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+</div>
+
+<br />
+
 <div>
     <a asp-action="Index">Back to Matches</a>
 </div>

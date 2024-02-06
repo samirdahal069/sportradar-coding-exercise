@@ -73,6 +73,9 @@ namespace SportradarCodingExercise.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateScore(Match match)
         {
+            if (!ModelState.IsValid)
+                return View(match);
+
             if (ModelState.IsValid)
             {
                 await _scoreboardService.UpdateScore(match);
