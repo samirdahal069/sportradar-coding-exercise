@@ -3,59 +3,104 @@ using Models;
 
 namespace Services
 {
-    public class ScoreboardService(ApplictionDBContext dbContext) : IScoreboardService
+    public class ScoreboardService : IScoreboardService
     {
-        private readonly ApplictionDBContext _dbContext = dbContext;
+        private readonly ApplictionDBContext _dbContext;
+        private readonly ILogger<ScoreboardService> _logger;
+
+        public ScoreboardService(ILogger<ScoreboardService> logger, ApplictionDBContext dbContext)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+        }
 
         public async Task StartNewMatch(Match match)
         {
-            await _dbContext.Matches.AddAsync(match);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.Matches.AddAsync(match);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error in StartNewMatch for matchId: {match.MatchId}");
+                throw;
+            }
+
         }
 
 
-        #pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8603 // Possible null reference return.
         public async Task<Match> GetMatchById(Guid matchId) => await _dbContext.Matches.FindAsync(matchId);
-        #pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8603 // Possible null reference return.
 
 
         public async Task UpdateScore(Match match)
         {
-            //get match by Id
-            var matchToUpdate = await GetMatchById(match.MatchId);
 
-            if (matchToUpdate == null)
-                return;
-
-            if (matchToUpdate != null && matchToUpdate.EndTime == null)
+            try
             {
-                matchToUpdate.HomeTeamScore = match.HomeTeamScore;
-                matchToUpdate.AwayTeamScore = match.AwayTeamScore;
-                await _dbContext.SaveChangesAsync();
+
+                //get match by Id
+                var matchToUpdate = await GetMatchById(match.MatchId);
+
+                if (matchToUpdate == null)
+                    return;
+
+                if (matchToUpdate != null && matchToUpdate.EndTime == null)
+                {
+                    matchToUpdate.HomeTeamScore = match.HomeTeamScore;
+                    matchToUpdate.AwayTeamScore = match.AwayTeamScore;
+                    await _dbContext.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error in UpdateScore for matchId: {match.MatchId}");
+                throw;
             }
         }
 
         public async Task FinishMatch(Guid matchId)
         {
-            var matchToFinish = await GetMatchById(matchId);
-
-            if (matchToFinish == null)
-                return;
-
-            if (matchToFinish != null && matchToFinish.EndTime == null)
+            try
             {
-                matchToFinish.EndTime = DateTime.Now;
-                await _dbContext.SaveChangesAsync();
+                var matchToFinish = await GetMatchById(matchId);
+
+                if (matchToFinish == null)
+                    return;
+
+                if (matchToFinish != null && matchToFinish.EndTime == null)
+                {
+                    matchToFinish.EndTime = DateTime.Now;
+                    await _dbContext.SaveChangesAsync();
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error in FinishMatch for matchId: {matchId}");
+                throw;
+            }
+
         }
 
         public async Task<IEnumerable<Match>> GetMatchesInProgressSummary()
         {
-            return await _dbContext.Matches
-            .Where(m => m.EndTime == null)
-            .OrderByDescending(m => m.HomeTeamScore + m.AwayTeamScore)
-            .ThenByDescending(m => m.StartTime)
-            .ToListAsync();
+
+            try
+            {
+                return await _dbContext.Matches
+                   .Where(m => m.EndTime == null)
+                   .OrderByDescending(m => m.HomeTeamScore + m.AwayTeamScore)
+                   .ThenByDescending(m => m.StartTime)
+                   .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error in GetMatchesInProgressSummary");
+                throw;
+            }
         }
 
         public async Task<bool> HasActiveMatch(Match match)
