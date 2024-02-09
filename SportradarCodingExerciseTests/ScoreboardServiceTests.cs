@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Models;
+using Moq;
 using Services;
 using Xunit;
 
@@ -11,6 +13,8 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task StartNewMatch_AddsMatchToDatabase()
     {
+
+        var loggerMock = new Mock<ILogger<ScoreboardService>>();
         // Arrange
         var options = new DbContextOptionsBuilder<ApplictionDBContext>()
             .UseInMemoryDatabase(databaseName: "StartNewMatch_Database")
@@ -18,8 +22,8 @@ public class ScoreboardServiceTests
 
         using (var dbContext = new ApplictionDBContext(options))
         {
-            var service = new ScoreboardService(dbContext);
-            var match = new Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
+            var service = new ScoreboardService(loggerMock.Object, dbContext);
+            var match = new Models.Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
 
             // Act
             await service.StartNewMatch(match);
@@ -35,6 +39,9 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task GetMatchById_ReturnsCorrectMatch()
     {
+
+        var loggerMock = new Mock<ILogger<ScoreboardService>>();
+
         // Arrange
         var options = new DbContextOptionsBuilder<ApplictionDBContext>()
             .UseInMemoryDatabase(databaseName: "GetMatchById_Database")
@@ -42,8 +49,8 @@ public class ScoreboardServiceTests
 
         using (var dbContext = new ApplictionDBContext(options))
         {
-            var service = new ScoreboardService(dbContext);
-            var match1 = new Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
+            var service = new ScoreboardService(loggerMock.Object,dbContext);
+            var match1 = new Models.Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
 
             // Add the match to the database
             await dbContext.Matches.AddAsync(match1);
@@ -62,6 +69,9 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task UpdateScore_UpdatesMatchScoreInDatabase()
     {
+
+        var loggerMock = new Mock<ILogger<ScoreboardService>>();
+
         // Arrange
         var options = new DbContextOptionsBuilder<ApplictionDBContext>()
             .UseInMemoryDatabase(databaseName: "UpdateScore_Database")
@@ -69,8 +79,8 @@ public class ScoreboardServiceTests
 
         using (var dbContext = new ApplictionDBContext(options))
         {
-            var service = new ScoreboardService(dbContext);
-            var match = new Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
+            var service = new ScoreboardService(loggerMock.Object, dbContext);
+            var match = new Models.Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
 
             // Add the match to the database
             await dbContext.Matches.AddAsync(match);
@@ -93,6 +103,8 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task FinishMatch_FinishesMatchInDatabase()
     {
+
+        var loggerMock = new Mock<ILogger<ScoreboardService>>();
         // Arrange
         var options = new DbContextOptionsBuilder<ApplictionDBContext>()
             .UseInMemoryDatabase(databaseName: "FinishMatch_Database")
@@ -100,8 +112,8 @@ public class ScoreboardServiceTests
 
         using (var dbContext = new ApplictionDBContext(options))
         {
-            var service = new ScoreboardService(dbContext);
-            var match = new Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
+            var service = new ScoreboardService(loggerMock.Object, dbContext);
+            var match = new Models.Match { HomeTeam = "TeamA", AwayTeam = "TeamB" };
 
             // Add the match to the database
             await dbContext.Matches.AddAsync(match);
@@ -121,6 +133,8 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task GetMatchesInProgressSummary_ReturnsMatchesInOrder()
     {
+        var loggerMock = new Mock<ILogger<ScoreboardService>>();
+
         // Arrange
         var options = new DbContextOptionsBuilder<ApplictionDBContext>()
             .UseInMemoryDatabase(databaseName: "GetMatchesInProgressSummary_Database")
@@ -136,9 +150,9 @@ public class ScoreboardServiceTests
             // Save changes to the database
             dbContext.SaveChanges();
 
-            var service = new ScoreboardService(dbContext);
-            var match1 = new Match { HomeTeam = "TeamA", AwayTeam = "TeamB", StartTime = DateTime.Now.AddMinutes(-5) };
-            var match2 = new Match { HomeTeam = "TeamC", AwayTeam = "TeamD", StartTime = DateTime.Now.AddMinutes(-3) };
+            var service = new ScoreboardService(loggerMock.Object, dbContext);
+            var match1 = new Models.Match { HomeTeam = "TeamA", AwayTeam = "TeamB", StartTime = DateTime.Now.AddMinutes(-5) };
+            var match2 = new Models.Match { HomeTeam = "TeamC", AwayTeam = "TeamD", StartTime = DateTime.Now.AddMinutes(-3) };
 
             // Add matches to the database
             await dbContext.Matches.AddRangeAsync(match1, match2);
